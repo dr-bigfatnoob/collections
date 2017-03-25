@@ -6,14 +6,62 @@ package us.bigfatnoob.sort;
  */
 public abstract class Sort {
 
+
+    public enum Order {
+        ASCENDING(0, "ascending"),
+        DESCENDING(1, "descending");
+
+        private int index;
+
+        private String name;
+
+        Order(int index, String name) {
+            this.index = index;
+            this.name = name;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
     /***
      * Check if one is less than two.
      * @param one: Instance of comparator
      * @param two: Instance of comparator
      * @return True if one < two else False
      */
-    protected static boolean less(Comparable one, Comparable two) {
+    private static boolean less(Comparable one, Comparable two) {
         return one.compareTo(two) < 0;
+    }
+
+    /***
+     * Check if one is less than two.
+     * @param one: Instance of comparator
+     * @param two: Instance of comparator
+     * @return True if one > two else False
+     */
+    private static boolean more(Comparable one, Comparable two) {
+        return one.compareTo(two) > 0;
+    }
+
+    /***
+     * Compare one to two
+     * @param one : Instance of comparator
+     * @param two: Instance of comparator
+     * @param order: Order of sort
+     * @return Call less if order is ASCENDING else call more.
+     */
+    protected static boolean compare(Comparable one, Comparable two, Order order) {
+        if (order.equals(Order.ASCENDING))
+            return less(one, two);
+        else
+            return more(one, two);
+
     }
 
     /***
