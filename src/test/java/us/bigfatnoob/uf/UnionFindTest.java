@@ -7,8 +7,7 @@ import static org.junit.Assert.*;
 /**
  * Generic Test Skeleton for UnionFind
  */
-@Ignore
-public class UnionFindTest {
+public abstract class UnionFindTest {
 
     UnionFind<Integer> unionFind;
     final Integer[] items = new Integer[]{1,2,3,4,5,6,7,8,9};
