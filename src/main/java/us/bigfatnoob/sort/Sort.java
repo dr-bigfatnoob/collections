@@ -33,34 +33,22 @@ public abstract class Sort {
 
     /***
      * Check if one is less than two.
-     * @param one: Instance of comparator
-     * @param two: Instance of comparator
-     * @return True if one < two else False
-     */
-    private static boolean less(Comparable one, Comparable two) {
-        return one.compareTo(two) < 0;
-    }
-
-    /***
-     * Check if one is less than two.
      * @param c: Instance of comparator
      * @param one: Instance of Object
      * @param two: Instance of Object.
      * @return True if c.compare(one, two) < 0 else False
      */
-    private static boolean less(Comparator c, Object one, Object two) {
-        return c.compare(one, two) < 0;
+    private static boolean less(Object one, Object two, Comparator c) {
+        if (c != null)
+            return c.compare(one, two) < 0;
+        else if (one instanceof Comparable && two instanceof Comparable)
+            return ((Comparable) one).compareTo((two)) < 0;
+        else{
+            throw new IllegalArgumentException("Either comparator has to be not null " +
+                    "or objects should extend Comparable");
+        }
     }
 
-    /***
-     * Check if one is more than two.
-     * @param one: Instance of comparator
-     * @param two: Instance of comparator
-     * @return True if one > two else False
-     */
-    private static boolean more(Comparable one, Comparable two) {
-        return one.compareTo(two) > 0;
-    }
 
     /***
      * Check if one is more than two.
@@ -69,8 +57,14 @@ public abstract class Sort {
      * @param two: Instance of Object.
      * @return True if c.compare(one, two) > 0 else False
      */
-    private static boolean more(Comparator c, Object one, Object two) {
-        return c.compare(one, two) > 0;
+    private static boolean more(Object one, Object two, Comparator c) {
+        if (c != null)
+            return c.compare(one, two) > 0;
+        else if (one instanceof Comparable && two instanceof Comparable)
+            return ((Comparable) one).compareTo(two) > 0;
+        else
+            throw new IllegalArgumentException("Either comparator has to be not null " +
+                    "or objects should extend Comparable");
     }
 
     /***
@@ -82,17 +76,17 @@ public abstract class Sort {
      */
     protected static boolean compare(Comparable one, Comparable two, Order order) {
         if (order.equals(Order.ASCENDING))
-            return less(one, two);
+            return less(one, two, null);
         else
-            return more(one, two);
+            return more(one, two, null);
 
     }
 
-    protected static boolean compare(Comparator c, Object one, Object two, Order order) {
+    protected static boolean compare(Object one, Object two, Order order, Comparator c) {
         if (order.equals(Order.ASCENDING))
-            return less(c, one, two);
+            return less(one, two, c);
         else
-            return more(c, one, two);
+            return more(one, two, c);
     }
 
     /***

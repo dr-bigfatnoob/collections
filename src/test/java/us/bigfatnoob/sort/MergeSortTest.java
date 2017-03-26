@@ -3,40 +3,40 @@ package us.bigfatnoob.sort;
 import org.junit.Test;
 
 /**
- * Created by @bigfatnoob on 3/25/17.
- * Test for InsertionSort
+ * Created by @bigfatnoob on 3/26/17.
+ * Test for MergeSort
  */
-public class InsertionSortTest extends SortTest{
+public class MergeSortTest extends SortTest{
 
     @Override
     protected void sortEmpty() {
-        SelectionSort.sort(emptyArray);
+        MergeSort.sort(emptyArray);
     }
 
     @Override
     protected void ascendingSort() {
-        InsertionSort.sort(ascendingItems);
+        MergeSort.sort(ascendingItems);
     }
 
     @Override
     protected void descendingSort() {
-        InsertionSort.sort(descendingItems, Sort.Order.DESCENDING);
+        MergeSort.sort(descendingItems, Sort.Order.DESCENDING);
     }
 
     @Override
     protected void ascendingSignedSort() {
-        InsertionSort.sort(ascendingSignedItems, absComparator);
+        MergeSort.sort(ascendingSignedItems, absComparator);
     }
 
     @Override
     protected void descendingSignedSort() {
-        InsertionSort.sort(descendingSignedItems, absComparator, Sort.Order.DESCENDING);
+        MergeSort.sort(descendingSignedItems, absComparator, Sort.Order.DESCENDING);
     }
 
 
     @Test(expected = NullPointerException.class)
     public void testNullPointerException(){
-        InsertionSort.sort(null);
+        MergeSort.sort(null);
     }
 
 }
