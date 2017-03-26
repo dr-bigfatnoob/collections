@@ -1,6 +1,6 @@
 package us.bigfatnoob.sort;
 
-import org.junit.Before;
+
 import org.junit.Test;
 
 /**
@@ -9,17 +9,33 @@ import org.junit.Test;
  */
 public class SelectionSortTest extends SortTest{
 
-    @Before
     @Override
-    public void setUp() throws Exception {
-        super.setUp();
+    protected void sortEmpty() {
         SelectionSort.sort(emptyArray);
+    }
+
+    @Override
+    protected void ascendingSort() {
         SelectionSort.sort(ascendingItems);
-        SelectionSort.sort(descendingItems);
+    }
+
+    @Override
+    protected void descendingSort() {
+        SelectionSort.sort(descendingItems, Sort.Order.DESCENDING);
+    }
+
+    @Override
+    protected void ascendingSignedSort() {
+        SelectionSort.sort(ascendingSignedItems, absComparator);
+    }
+
+    @Override
+    protected void descendingSignedSort() {
+        SelectionSort.sort(descendingSignedItems, absComparator, Sort.Order.DESCENDING);
     }
 
     @Test(expected = NullPointerException.class)
-    public void sortNullArray() {
+    public void testNullPointerException(){
         SelectionSort.sort(null);
     }
 

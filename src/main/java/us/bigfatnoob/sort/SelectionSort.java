@@ -1,6 +1,8 @@
 package us.bigfatnoob.sort;
 
 
+import java.util.Comparator;
+
 /**
  * Created by @bigfatnoob on 3/25/17.
  * Selection version of Sort
@@ -31,6 +33,34 @@ public class SelectionSort extends Sort{
      */
     public static void sort(Comparable[] array) {
         sort(array, Order.ASCENDING);
+    }
+
+    /***
+     * Sort an array using selection sort and a comparator
+     * @param array: Array to be sorted
+     * @param comparator: Instance of Comparator used for sort
+     * @param order: Order of sort
+     */
+    public static void sort(Object[] array, Comparator comparator, Order order) {
+        if (array == null)
+            throw new NullPointerException("Array cannot be null.");
+        int size = array.length;
+        for (int i = 0; i < size; i++) {
+            int better = i;
+            for (int j=i+1; j < size; j++)
+                if (compare(comparator, array[j], array[better], order))
+                    better = j;
+            exch(array, i, better);
+        }
+    }
+
+    /***
+     * Sort an array in ascending order using selection sort and a comparator.
+     * @param array: Array to be sorted.
+     * @param comparator: Instance of Comparator used for sort.
+     */
+    public static void sort(Object[] array, Comparator comparator) {
+        sort(array, comparator, Order.ASCENDING);
     }
 
 }
