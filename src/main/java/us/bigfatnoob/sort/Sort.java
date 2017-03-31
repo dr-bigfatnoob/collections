@@ -68,6 +68,24 @@ public abstract class Sort {
     }
 
     /***
+     * Check if one is less than two.
+     * @param c: Instance of comparator
+     * @param one: Instance of Object
+     * @param two: Instance of Object.
+     * @return True if c.compare(one, two) < 0 else False
+     */
+    protected static int compare(Object one, Object two, Comparator c) {
+        if (c != null)
+            return c.compare(one, two);
+        else if (one instanceof Comparable && two instanceof Comparable)
+            return ((Comparable) one).compareTo((two));
+        else{
+            throw new IllegalArgumentException("Either comparator has to be not null " +
+                    "or objects should extend Comparable");
+        }
+    }
+
+    /***
      * Compare one to two
      * @param one : Instance of comparator
      * @param two: Instance of comparator
