@@ -33,7 +33,6 @@ public class InsertionSortTest extends SortTest{
         InsertionSort.sort(descendingSignedItems, absComparator, Sort.Order.DESCENDING);
     }
 
-
     @Test(expected = NullPointerException.class)
     public void testNullPointerException(){
         InsertionSort.sort(null);

@@ -71,6 +71,7 @@ public class MergeSort extends Sort{
     /***
      * Sort an array using merge sort.
      * @param array: Array to be sorted.
+    * @param comparator: Instance of comparator used for comparing.
      * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
      */
     public static void sort(Object[] array, Comparator comparator, Order order) {
@@ -83,6 +84,7 @@ public class MergeSort extends Sort{
     /***
      * Sort an array using merge sort.
      * @param array: Array to be sort.
+     * @param comparator: Instance of comparator used for comparing.
      */
     public static void sort(Object[] array, Comparator comparator) {
         sort(array, comparator, Order.ASCENDING);

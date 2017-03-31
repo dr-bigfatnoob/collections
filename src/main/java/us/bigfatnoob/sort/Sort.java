@@ -91,9 +91,9 @@ public abstract class Sort {
 
     /***
      * Swap array[i] with array[j]
-     * @param array - Array that needs values to be swapped
-     * @param i - Index of first element
-     * @param j - Index of second element
+     * @param array: Array that needs values to be swapped
+     * @param i: Index of first element
+     * @param j: Index of second element
      */
     protected static void exch(Object[] array, int i, int j) {
         Object swap = array[i];
@@ -101,6 +101,22 @@ public abstract class Sort {
         array[j] = swap;
     }
 
-
+    /***
+     * Sort array between indices using insertion sort
+     * @param array: Array that needs to be sorted.
+     * @param start: Start of sort.
+     * @param end: End of sort.
+     * @param order: Order of sorting
+     * @param c: Instance of comparator
+     */
+    protected static void insertionSort(Object[] array, int start, int end, Order order, Comparator c) {
+        for (int i = start+1; i <= end; i++) {
+            int j = i;
+            while (j > start && compare(array[j], array[j-1], order, c)) {
+                exch(array, j, j - 1);
+                j--;
+            }
+        }
+    }
 
 }

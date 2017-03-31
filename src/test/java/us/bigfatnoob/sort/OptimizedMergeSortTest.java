@@ -33,7 +33,6 @@ public class OptimizedMergeSortTest extends SortTest{
         OptimizedMergeSort.sort(descendingSignedItems, absComparator, Sort.Order.DESCENDING);
     }
 
-
     @Test(expected = NullPointerException.class)
     public void testNullPointerException(){
         OptimizedMergeSort.sort(null);

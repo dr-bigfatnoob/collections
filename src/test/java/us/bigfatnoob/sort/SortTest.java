@@ -77,7 +77,6 @@ public abstract class SortTest {
         assertEquals("Array size has to be empty.", 0, emptyArray.length);
     }
 
-
     @Test
     public void sortAscending() {
         ascendingSort();
@@ -109,6 +108,5 @@ public abstract class SortTest {
         assertEquals("Smallest element has to be the last.", dsiMin, descendingSignedItems[descendingSignedItems.length - 1]);
         assertEquals("Largest element has to be the first.", dsiMax, descendingSignedItems[0]);
     }
-
 
 }

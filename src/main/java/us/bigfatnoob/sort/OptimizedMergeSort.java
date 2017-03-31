@@ -62,16 +62,6 @@ public class OptimizedMergeSort extends Sort{
         merge(array, aux, low, mid, high, c, order);
     }
 
-    private static void insertionSort(Object[] array, int start, int end, Order order, Comparator c) {
-        for (int i = start+1; i <= end; i++) {
-            int j = i;
-            while (j > start && compare(array[j], array[j-1], order, c)) {
-                exch(array, j, j - 1);
-                j--;
-            }
-        }
-    }
-
     /***
      * Sort an array using merge sort.
      * @param array: Array to be sorted.
