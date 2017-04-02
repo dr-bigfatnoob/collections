@@ -1,5 +1,6 @@
 package us.bigfatnoob.sort;
 
+import us.bigfatnoob.utils.Compare;
 import us.bigfatnoob.utils.StdRandom;
 import java.util.Comparator;
 
@@ -18,9 +19,9 @@ public class OptimizedQuickSort extends QuickSort {
      * Sort an array using quick sort
      * @param array: Array to be sorted
      * @param comparator: Instance of comparator used for comparing.
-     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
+     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.utils.Compare.Order}
      */
-    public static void sort(Object[] array, Comparator comparator, Order order) {
+    public static void sort(Object[] array, Comparator comparator, Compare.Order order) {
         if (array == null)
             throw new NullPointerException("Array cannot be null.");
         StdRandom.shuffle(array);
@@ -36,15 +37,15 @@ public class OptimizedQuickSort extends QuickSort {
         if (array == null)
             throw new NullPointerException("Array cannot be null.");
         StdRandom.shuffle(array);
-        sort(array, 0, array.length-1, comparator, Order.ASCENDING);
+        sort(array, 0, array.length-1, comparator, Compare.Order.ASCENDING);
     }
 
     /***
      * Sort an array using quick sort.
      * @param array: Array to be sorted.
-     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
+     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.utils.Compare.Order}
      */
-    public static void sort(Object[] array, Order order) {
+    public static void sort(Object[] array, Compare.Order order) {
         if (array == null)
             throw new NullPointerException("Array cannot be null.");
         StdRandom.shuffle(array);
@@ -59,7 +60,7 @@ public class OptimizedQuickSort extends QuickSort {
         if (array == null)
             throw new NullPointerException("Array cannot be null.");
         StdRandom.shuffle(array);
-        sort(array, 0, array.length-1, null, Order.ASCENDING);
+        sort(array, 0, array.length-1, null, Compare.Order.ASCENDING);
     }
 
     /***
@@ -68,9 +69,9 @@ public class OptimizedQuickSort extends QuickSort {
      * @param low: Start index of sort
      * @param high: End index of sort
      * @param c: Instance of comparator used for sort
-     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
+     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.utils.Compare.Order}
      */
-    private static void sort(Object[]array, int low, int high, Comparator c, Order order) {
+    private static void sort(Object[]array, int low, int high, Comparator c, Compare.Order order) {
         if (high <= low)
             return;
         if (high <= low + CUTOFF - 1){
@@ -78,7 +79,7 @@ public class OptimizedQuickSort extends QuickSort {
             return;
         }
         int m = medianOf3(array, low, high, c);
-        exch(array, low, m);
+        Compare.exch(array, low, m);
         int j = partition(array, low, high, c, order);
         sort(array, low, j - 1, c, order);
         sort(array, j + 1, high, c, order);
@@ -97,7 +98,7 @@ public class OptimizedQuickSort extends QuickSort {
         int two = StdRandom.uniform(low, high + 1);
         int three = StdRandom.uniform(low, high + 1);
         Object[] shortArray = new Object[]{array[one], array[two], array[three]};
-        insertionSort(shortArray, 0, 2, Order.ASCENDING, c);
+        insertionSort(shortArray, 0, 2, Compare.Order.ASCENDING, c);
         Object median = shortArray[1];
         if (median.equals(array[one]))
             return one;

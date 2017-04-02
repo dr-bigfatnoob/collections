@@ -1,6 +1,7 @@
 package us.bigfatnoob.sort;
 
 import org.junit.Test;
+import us.bigfatnoob.utils.Compare;
 
 /**
  * Created by @bigfatnoob on 3/30/17.
@@ -19,7 +20,7 @@ public class OptimizedQuickSortTest extends SortTest {
 
     @Override
     protected void descendingSort() {
-        OptimizedQuickSort.sort(descendingItems, Sort.Order.DESCENDING);
+        OptimizedQuickSort.sort(descendingItems, Compare.Order.DESCENDING);
     }
 
     @Override
@@ -29,7 +30,7 @@ public class OptimizedQuickSortTest extends SortTest {
 
     @Override
     protected void descendingSignedSort() {
-        QuickSort.sort(descendingSignedItems, absComparator, Sort.Order.DESCENDING);
+        QuickSort.sort(descendingSignedItems, absComparator, Compare.Order.DESCENDING);
     }
 
     @Test(expected = NullPointerException.class)

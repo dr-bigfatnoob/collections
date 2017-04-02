@@ -1,5 +1,7 @@
 package us.bigfatnoob.sort;
 
+import us.bigfatnoob.utils.Compare;
+
 import java.util.Comparator;
 
 /**
@@ -17,7 +19,7 @@ public class MergeSort extends Sort{
      * @param high: High of sort
      * @param order: Order of sort
      */
-    private static void merge(Object[] array, Object[] aux, int low, int mid, int high, Comparator c, Order order) {
+    private static void merge(Object[] array, Object[] aux, int low, int mid, int high, Comparator c, Compare.Order order) {
         int i = low, j = mid + 1;
         System.arraycopy(array, low, aux, low, high - low + 1);
         for (int k = low; k <= high; k++) {
@@ -25,7 +27,7 @@ public class MergeSort extends Sort{
                 array[k] = aux[j++];
             else if (j > high)
                 array[k] = aux[i++];
-            else if (compare(aux[j], aux[i], order, c))
+            else if (Compare.compare(aux[j], aux[i], order, c))
                 array[k] = aux[j++];
             else
                 array[k] = aux[i++];
@@ -40,7 +42,7 @@ public class MergeSort extends Sort{
      * @param high: High of sort
      * @param order: Order of sort
      */
-    private static void sort(Object[] array, Object[] aux,  int low, int high, Comparator c, Order order) {
+    private static void sort(Object[] array, Object[] aux,  int low, int high, Comparator c, Compare.Order order) {
         if (high <= low) return;
         int mid = low + (high - low) / 2;
         sort(array, aux, low, mid, c, order);
@@ -51,9 +53,9 @@ public class MergeSort extends Sort{
     /***
      * Sort an array using merge sort.
      * @param array: Array to be sorted.
-     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
+     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.utils.Compare.Order}
      */
-    public static void sort(Comparable[] array, Order order) {
+    public static void sort(Comparable[] array, Compare.Order order) {
         if (array == null)
             throw new NullPointerException("Array cannot be null.");
         Comparable[] aux = new Comparable[array.length];
@@ -65,16 +67,16 @@ public class MergeSort extends Sort{
      * @param array: Array to be sort.
      */
     public static void sort(Comparable[] array) {
-        sort(array, Order.ASCENDING);
+        sort(array, Compare.Order.ASCENDING);
     }
 
     /***
      * Sort an array using merge sort.
      * @param array: Array to be sorted.
     * @param comparator: Instance of comparator used for comparing.
-     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
+     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.utils.Compare.Order}
      */
-    public static void sort(Object[] array, Comparator comparator, Order order) {
+    public static void sort(Object[] array, Comparator comparator, Compare.Order order) {
         if (array == null)
             throw new NullPointerException("Array cannot be null.");
         Object[] aux = new Comparable[array.length];
@@ -87,7 +89,7 @@ public class MergeSort extends Sort{
      * @param comparator: Instance of comparator used for comparing.
      */
     public static void sort(Object[] array, Comparator comparator) {
-        sort(array, comparator, Order.ASCENDING);
+        sort(array, comparator, Compare.Order.ASCENDING);
     }
 
 }

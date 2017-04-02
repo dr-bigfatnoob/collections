@@ -1,6 +1,7 @@
 package us.bigfatnoob.sort;
 
 import java.util.Comparator;
+import us.bigfatnoob.utils.Compare;
 
 /**
  * Created by @bigfatnoob on 3/25/17.
@@ -12,14 +13,14 @@ public class InsertionSort extends Sort{
      * Sort an array using insertion sort and a compartor.
      * @param array: Array to be sorted.
      * @param comparator: Instance of Comparator used for sort.
-     * @param order: Can be in ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
+     * @param order: Can be in ASCENDING or DESCENDING order {@link us.bigfatnoob.utils.Compare.Order}
      */
-    public static void sort(Object[] array, Comparator comparator, Order order) {
+    public static void sort(Object[] array, Comparator comparator, Compare.Order order) {
         int size = array.length;
         for (int i = 1; i < size; i++) {
             int j = i;
-            while (j > 0 && compare(array[j], array[j - 1], order, comparator)) {
-                exch(array, j, j - 1);
+            while (j > 0 && Compare.compare(array[j], array[j - 1], order, comparator)) {
+                Compare.exch(array, j, j - 1);
                 j--;
             }
         }
@@ -31,15 +32,15 @@ public class InsertionSort extends Sort{
      * @param comparator: Instance of Comparator used for sort.
      */
     public static void sort(Object[] array, Comparator comparator) {
-        sort(array, comparator, Order.ASCENDING);
+        sort(array, comparator, Compare.Order.ASCENDING);
     }
 
     /***
      * Sort an array using insertion sort.
      * @param array: Array to be sorted.
-     * @param order: Can be in ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
+     * @param order: Can be in ASCENDING or DESCENDING order {@link us.bigfatnoob.utils.Compare}
      */
-    public static void sort(Comparable[] array, Order order) {
+    public static void sort(Comparable[] array, Compare.Order order) {
         sort(array, null, order);
     }
 
@@ -48,7 +49,7 @@ public class InsertionSort extends Sort{
      * @param array: Array to be sorted.
      */
     public static void sort(Comparable[] array) {
-        sort(array, Order.ASCENDING);
+        sort(array, Compare.Order.ASCENDING);
     }
 
 }

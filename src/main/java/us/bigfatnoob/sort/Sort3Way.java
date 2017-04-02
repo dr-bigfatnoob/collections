@@ -1,5 +1,6 @@
 package us.bigfatnoob.sort;
 
+import us.bigfatnoob.utils.Compare;
 import us.bigfatnoob.utils.StdRandom;
 import java.util.Comparator;
 
@@ -13,9 +14,9 @@ public class Sort3Way extends Sort {
      * Sort an array using 3 way sort
      * @param array: Array to be sorted
      * @param comparator: Instance of comparator used for comparing.
-     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
+     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.utils.Compare.Order}
      */
-    public static void sort(Object[] array, Comparator comparator, Order order) {
+    public static void sort(Object[] array, Comparator comparator, Compare.Order order) {
         if (array == null)
             throw new NullPointerException("Array cannot be null.");
         StdRandom.shuffle(array);
@@ -31,15 +32,15 @@ public class Sort3Way extends Sort {
         if (array == null)
             throw new NullPointerException("Array cannot be null.");
         StdRandom.shuffle(array);
-        sort(array, 0, array.length-1, comparator, Order.ASCENDING);
+        sort(array, 0, array.length-1, comparator, Compare.Order.ASCENDING);
     }
 
     /***
      * Sort an array using 3 way sort.
      * @param array: Array to be sorted.
-     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
+     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.utils.Compare.Order}
      */
-    public static void sort(Object[] array, Order order) {
+    public static void sort(Object[] array, Compare.Order order) {
         if (array == null)
             throw new NullPointerException("Array cannot be null.");
         StdRandom.shuffle(array);
@@ -54,7 +55,7 @@ public class Sort3Way extends Sort {
         if (array == null)
             throw new NullPointerException("Array cannot be null.");
         StdRandom.shuffle(array);
-        sort(array, 0, array.length-1, null, Order.ASCENDING);
+        sort(array, 0, array.length-1, null, Compare.Order.ASCENDING);
     }
 
 
@@ -64,19 +65,19 @@ public class Sort3Way extends Sort {
      * @param low: Start index of sort
      * @param high: End index of sort
      * @param c: Instance of comparator used for sort
-     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
+     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.utils.Compare.Order}
      */
-    private static void sort(Object[] array, int low, int high, Comparator c, Order order) {
+    private static void sort(Object[] array, int low, int high, Comparator c, Compare.Order order) {
         if (high <= low)
             return;
         int lt = low, gt = high, i =low;
         Object pivot = array[low];
         while (i <= gt) {
-            int status = compare(array[i], pivot, c);
-            if ((order.equals(Order.ASCENDING) && status < 0) || (order.equals(Order.DESCENDING) && status > 0))
-                exch(array, lt++, i++);
-            else if ((order.equals(Order.ASCENDING) && status > 0) || (order.equals(Order.DESCENDING) && status < 0))
-                exch(array, i, gt--);
+            int status = Compare.compare(array[i], pivot, c);
+            if ((order.equals(Compare.Order.ASCENDING) && status < 0) || (order.equals(Compare.Order.DESCENDING) && status > 0))
+                Compare.exch(array, lt++, i++);
+            else if ((order.equals(Compare.Order.ASCENDING) && status > 0) || (order.equals(Compare.Order.DESCENDING) && status < 0))
+                Compare.exch(array, i, gt--);
             else
                 i++;
         }

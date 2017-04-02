@@ -1,6 +1,7 @@
 package us.bigfatnoob.sort;
 
 import org.junit.Test;
+import us.bigfatnoob.utils.Compare;
 
 /**
  * Created by @bigfatnoob on 3/26/17.
@@ -20,7 +21,7 @@ public class OptimizedMergeSortTest extends SortTest{
 
     @Override
     protected void descendingSort() {
-        OptimizedMergeSort.sort(descendingItems, Sort.Order.DESCENDING);
+        OptimizedMergeSort.sort(descendingItems, Compare.Order.DESCENDING);
     }
 
     @Override
@@ -30,7 +31,7 @@ public class OptimizedMergeSortTest extends SortTest{
 
     @Override
     protected void descendingSignedSort() {
-        OptimizedMergeSort.sort(descendingSignedItems, absComparator, Sort.Order.DESCENDING);
+        OptimizedMergeSort.sort(descendingSignedItems, absComparator, Compare.Order.DESCENDING);
     }
 
     @Test(expected = NullPointerException.class)

@@ -1,6 +1,7 @@
 package us.bigfatnoob.sort;
 
 import org.junit.Test;
+import us.bigfatnoob.utils.Compare;
 
 /**
  * Created by @bigfatnoob on 3/31/17.
@@ -20,7 +21,7 @@ public class Sort3WayTest extends SortTest {
 
     @Override
     protected void descendingSort() {
-        Sort3Way.sort(descendingItems, Sort.Order.DESCENDING);
+        Sort3Way.sort(descendingItems, Compare.Order.DESCENDING);
     }
 
     @Override
@@ -30,7 +31,7 @@ public class Sort3WayTest extends SortTest {
 
     @Override
     protected void descendingSignedSort() {
-        Sort3Way.sort(descendingSignedItems, absComparator, Sort.Order.DESCENDING);
+        Sort3Way.sort(descendingSignedItems, absComparator, Compare.Order.DESCENDING);
     }
 
     @Test(expected = NullPointerException.class)

@@ -1,5 +1,6 @@
 package us.bigfatnoob.sort;
 
+import us.bigfatnoob.utils.Compare;
 import us.bigfatnoob.utils.StdRandom;
 import java.util.Comparator;
 
@@ -15,24 +16,24 @@ public class QuickSort extends Sort{
      * @param low: Start index which is used as a pivot
      * @param high: End index
      * @param comparator: Instance of comparator
-     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
+     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.utils.Compare.Order}
      * @return - Index of pivot in the array
      */
-    public static int partition(Object[] array, int low, int high, Comparator comparator, Order order) {
+    public static int partition(Object[] array, int low, int high, Comparator comparator, Compare.Order order) {
         int i = low, j = high + 1;
         Object pivot = array[low];
         while (true) {
-            while (compare(array[++i], pivot, order, comparator))
+            while (Compare.compare(array[++i], pivot, order, comparator))
                 if (i == high)
                     break;
-            while (compare(pivot, array[--j], order, comparator))
+            while (Compare.compare(pivot, array[--j], order, comparator))
                 if (j == low)
                     break;
             if (i >= j)
                 break;
-            exch(array, i, j);
+            Compare.exch(array, i, j);
         }
-        exch(array, low, j);
+        Compare.exch(array, low, j);
         return j;
     }
 
@@ -41,9 +42,9 @@ public class QuickSort extends Sort{
      * Sort an array using quick sort
      * @param array: Array to be sorted
      * @param comparator: Instance of comparator used for comparing.
-     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
+     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.utils.Compare.Order}
      */
-    public static void sort(Object[] array, Comparator comparator, Order order) {
+    public static void sort(Object[] array, Comparator comparator, Compare.Order order) {
         if (array == null)
             throw new NullPointerException("Array cannot be null.");
         StdRandom.shuffle(array);
@@ -59,15 +60,15 @@ public class QuickSort extends Sort{
         if (array == null)
             throw new NullPointerException("Array cannot be null.");
         StdRandom.shuffle(array);
-        sort(array, 0, array.length-1, comparator, Order.ASCENDING);
+        sort(array, 0, array.length-1, comparator, Compare.Order.ASCENDING);
     }
 
     /***
      * Sort an array using quick sort.
      * @param array: Array to be sorted.
-     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
+     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.utils.Compare.Order}
      */
-    public static void sort(Object[] array, Order order) {
+    public static void sort(Object[] array, Compare.Order order) {
         if (array == null)
             throw new NullPointerException("Array cannot be null.");
         StdRandom.shuffle(array);
@@ -82,7 +83,7 @@ public class QuickSort extends Sort{
         if (array == null)
             throw new NullPointerException("Array cannot be null.");
         StdRandom.shuffle(array);
-        sort(array, 0, array.length-1, null, Order.ASCENDING);
+        sort(array, 0, array.length-1, null, Compare.Order.ASCENDING);
     }
 
     /***
@@ -91,9 +92,9 @@ public class QuickSort extends Sort{
      * @param low: Start index of sort
      * @param high: End index of sort
      * @param c: Instance of comparator used for sort
-     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
+     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.utils.Compare.Order}
      */
-    private static void sort(Object[] array, int low, int high, Comparator c, Order order) {
+    private static void sort(Object[] array, int low, int high, Comparator c, Compare.Order order) {
         if (high <= low)
             return;
         int j = partition(array, low, high, c, order);

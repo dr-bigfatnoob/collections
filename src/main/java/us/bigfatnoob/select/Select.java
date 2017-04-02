@@ -1,7 +1,7 @@
 package us.bigfatnoob.select;
 
 import us.bigfatnoob.sort.QuickSort;
-import us.bigfatnoob.sort.Sort.Order;
+import us.bigfatnoob.utils.Compare.Order;
 import us.bigfatnoob.utils.StdRandom;
 import java.util.Comparator;
 
@@ -16,7 +16,7 @@ public class Select {
      * @param array: Array to be selected from.
      * @param k: Id of the item to be selected.
      * @param comparator: Instance of comparator
-     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
+     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.utils.Compare.Order}
      * @return - kth largest or smallest item.
      */
     public static Object select(Object[] array, int k, Comparator comparator, Order order) {
@@ -53,7 +53,7 @@ public class Select {
      * Select the kth largest or smallest item from the array.
      * @param array: Array to be selected from.
      * @param k: Id of the item to be selected.
-     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.sort.Sort.Order}
+     * @param order: Can be ASCENDING or DESCENDING order {@link us.bigfatnoob.utils.Compare.Order}
      * @return - kth largest or smallest item.
      */
     public static Object select(Object[] array, int k, Order order) {
