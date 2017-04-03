@@ -11,7 +11,7 @@ public class InsertionSortTest extends SortTest{
 
     @Override
     protected void sortEmpty() {
-        SelectionSort.sort(emptyArray);
+        InsertionSort.sort(emptyArray);
     }
 
     @Override

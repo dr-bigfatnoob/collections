@@ -13,7 +13,7 @@ public abstract class PriorityQueue<Item> {
     /***
      * Auxiliary array that stores the contents of the PQ
      */
-    private Item[] pq;
+    protected Item[] pq;
 
     /***
      * Size of array
@@ -103,7 +103,7 @@ public abstract class PriorityQueue<Item> {
      * If the child is larger than the parent, move it up the priority queue.
      * @param k: Index of item in array
      */
-    private void swim(int k) {
+    protected void swim(int k) {
         while (k > 1 && less(pq[k/2], pq[k])) {
             Compare.exch(pq, k/2, k);
             k = k / 2;
@@ -114,7 +114,7 @@ public abstract class PriorityQueue<Item> {
      * If the parent is less than either children, move it down the priority queue.
      * @param k: Index of item in array.
      */
-    private void sink(int k) {
+    protected void sink(int k) {
         while (2*k <= n) {
             int toSwap = 2*k;
             if (toSwap < n && less(pq[toSwap], pq[toSwap + 1]))
