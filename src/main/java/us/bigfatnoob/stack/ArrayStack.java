@@ -1,5 +1,6 @@
 package us.bigfatnoob.stack;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -60,5 +61,35 @@ public class ArrayStack<Item> implements Stack<Item> {
         Item[] copy = (Item[]) new Object[capacity];
         System.arraycopy(items, 0, copy, 0, size);
         items = copy;
+    }
+
+    /***
+     * Return an iterator over the items in LIFO order.
+     * @return - Instance of iterator
+     */
+    @Override
+    public Iterator<Item> iterator() {
+        return new ArrayIterator(size - 1);
+    }
+
+    private class ArrayIterator implements Iterator<Item> {
+
+        private int current;
+
+        ArrayIterator(int end) {
+            this.current = end;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current >= 0;
+        }
+
+        @Override
+        public Item next() {
+            if (!hasNext())
+                throw new NoSuchElementException();
+            return items[current--];
+        }
     }
 }

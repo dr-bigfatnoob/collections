@@ -5,7 +5,7 @@ package us.bigfatnoob.queue;
  * Interface defining basic actions
  * if a queue.
  */
-public interface Queue<Item> {
+public interface Queue<Item> extends Iterable<Item>{
 
     /***
      * Insert an item onto queue

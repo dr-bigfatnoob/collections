@@ -1,5 +1,8 @@
 package us.bigfatnoob.queue;
 
+import org.hamcrest.internal.ArrayIterator;
+
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -61,5 +64,36 @@ public class ArrayQueue<Item> implements Queue<Item> {
         System.arraycopy(items, start, copy, 0, size);
         items = copy;
         start = 0;
+    }
+
+
+    /***
+     * Return an iterator over the items in FIFO order.
+     * @return - Instance of iterator
+     */
+    @Override
+    public Iterator<Item> iterator() {
+        return new ArrayIterator(start);
+    }
+
+    private class ArrayIterator implements Iterator<Item> {
+
+        private int current;
+
+        ArrayIterator(int start) {
+            this.current = start;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current < size;
+        }
+
+        @Override
+        public Item next() {
+            if (!hasNext())
+                throw new NoSuchElementException();
+            return items[current++];
+        }
     }
 }
