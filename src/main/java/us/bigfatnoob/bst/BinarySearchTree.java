@@ -3,7 +3,6 @@ package us.bigfatnoob.bst;
 import us.bigfatnoob.queue.LinkedQueue;
 import us.bigfatnoob.queue.Queue;
 import us.bigfatnoob.utils.Compare;
-
 import java.util.Comparator;
 
 /**
@@ -12,55 +11,9 @@ import java.util.Comparator;
  */
 public class BinarySearchTree<Key, Value> {
 
-    private Node root;
+    private Node<Key, Value> root;
 
     private Comparator<Key> comparator;
-
-    private class Node {
-        /***
-         * Key for node which is used
-         * to construct the BST.
-         */
-        private Key key;
-
-        /***
-         * Value stored in the node.
-         */
-        private Value value;
-
-        /***
-         * Left and Right child of the node.
-         */
-        private Node left, right;
-
-        /***
-         * Return number of nodes in the BST.
-         */
-        private int size;
-
-        /***
-         * Create a new node.
-         * @param key: Key for the node
-         * @param value: Value for the node.
-         */
-        Node(Key key, Value value) {
-            this.key = key;
-            this.value = value;
-        }
-
-        /***
-         * Create a new node.
-         * @param key: Key for the node
-         * @param value: Value for the node.
-         * @param size: Size of the node.
-         */
-        Node(Key key, Value value, int size) {
-            this.key = key;
-            this.value = value;
-            this.size = size;
-        }
-    }
-
 
     /***
      * Create a binary search tree using a comparator.
@@ -70,6 +23,19 @@ public class BinarySearchTree<Key, Value> {
         this.comparator = comparator;
     }
 
+    /***
+     * @return - Root of the BST.
+     */
+    public Node<Key, Value> getRoot() {
+        return root;
+    }
+
+    /***
+     * @return - Return comparator
+     */
+    public Comparator<Key> getComparator() {
+        return comparator;
+    }
 
     /***
      * Create a binary search tree.
@@ -91,15 +57,15 @@ public class BinarySearchTree<Key, Value> {
      * @return - Value of the node matching the key else null.
      */
     public Value get(Key key) {
-        Node current = root;
+        Node<Key, Value> current = root;
         while (current != null) {
-            int status = Compare.compare(key, current.key, comparator);
+            int status = Compare.compare(key, current.getKey(), comparator);
             if (status < 0)
                 current = current.left;
             else if (status > 0)
                 current = current.right;
             else
-                return current.value;
+                return current.getValue();
         }
         return null;
     }
@@ -120,10 +86,10 @@ public class BinarySearchTree<Key, Value> {
      * @return - The leftmost key in BST.
      */
     public Key minimum() {
-        Node current = root;
+        Node<Key, Value> current = root;
         if (current == null)
             throw new NullPointerException("BST is empty");
-        return minimum(current).key;
+        return minimum(current).getKey();
     }
 
 
@@ -132,10 +98,10 @@ public class BinarySearchTree<Key, Value> {
      * @return - The rightmost key in BST.
      */
     public Key maximum() {
-        Node current = root;
+        Node<Key, Value> current = root;
         if (current == null)
             throw new NullPointerException("BST is empty");
-        return maximum(current).key;
+        return maximum(current).getKey();
     }
 
 
@@ -147,10 +113,10 @@ public class BinarySearchTree<Key, Value> {
     public Key floor(Key key) {
         if (root == null)
             throw new NullPointerException("BST is empty");
-        Node node = floor(root, key);
+        Node<Key, Value> node = floor(root, key);
         if (node == null)
             return null;
-        return node.key;
+        return node.getKey();
     }
 
 
@@ -162,10 +128,10 @@ public class BinarySearchTree<Key, Value> {
     public Key ceil(Key key) {
         if (root == null)
             throw new NullPointerException("BST is empty");
-        Node node = ceil(root, key);
+        Node<Key, Value> node = ceil(root, key);
         if (node == null)
             return null;
-        return node.key;
+        return node.getKey();
     }
 
 
@@ -210,10 +176,10 @@ public class BinarySearchTree<Key, Value> {
      * @param key - Key to be deleted.
      * @return - Node once key is deleted.
      */
-    private Node delete(Node node, Key key) {
+    private Node<Key, Value> delete(Node<Key, Value> node, Key key) {
         if (node == null)
             return null;
-        int status = Compare.compare(key, node.key, comparator);
+        int status = Compare.compare(key, node.getKey(), comparator);
         if (status < 0)
             node.left = delete(node.left, key);
         else if (status > 0)
@@ -223,7 +189,7 @@ public class BinarySearchTree<Key, Value> {
                 return node.right;
             if (node.right == null)
                 return node.left;
-            Node temp = node;
+            Node<Key, Value> temp = node;
             if (Math.random() < 0.5) {
                 node = maximum(temp.left);
                 node.left = deleteMax(temp.left);
@@ -260,16 +226,16 @@ public class BinarySearchTree<Key, Value> {
      * @param value: Value of Node.
      * @return - Node which was compared against.
      */
-    private Node put(Node node, Key key, Value value) {
+    private Node<Key, Value> put(Node<Key, Value> node, Key key, Value value) {
         if (node == null)
-            return new Node(key, value, 1);
-        int status = Compare.compare(key, node.key, comparator);
+            return new Node<Key, Value>(key, value, 1);
+        int status = Compare.compare(key, node.getKey(), comparator);
         if (status < 0)
             node.left = put(node.left, key, value);
         else if (status > 0)
             node.right = put(node.right, key, value);
         else
-            node.value = value;
+            node.setValue(value);
         node.size = 1 + size(node.left) + size(node.right);
         return node;
     }
@@ -282,15 +248,15 @@ public class BinarySearchTree<Key, Value> {
      * @param key: Instance of key
      * @return - Closest floor node.
      */
-    private Node floor(Node node, Key key) {
+    private Node<Key, Value> floor(Node<Key, Value> node, Key key) {
         if (node == null)
             return null;
-        int status = Compare.compare(key, node.key, comparator);
+        int status = Compare.compare(key, node.getKey(), comparator);
         if (status == 0)
             return node;
         if (status < 0)
             return floor(node.left, key);
-        Node right = floor(node.right, key);
+        Node<Key, Value> right = floor(node.right, key);
         if (right != null)
             return right;
         else
@@ -305,15 +271,15 @@ public class BinarySearchTree<Key, Value> {
      * @param key: Instance of key
      * @return - Closest ceil node.
      */
-    private Node ceil(Node node, Key key) {
+    private Node<Key, Value> ceil(Node<Key, Value> node, Key key) {
         if (node == null)
             return null;
-        int status = Compare.compare(key, node.key, comparator);
+        int status = Compare.compare(key, node.getKey(), comparator);
         if (status == 0)
             return node;
         if (status > 0)
             return ceil(node.right, key);
-        Node left = ceil(node.left, key);
+        Node<Key, Value> left = ceil(node.left, key);
         if (left != null)
             return left;
         else
@@ -326,7 +292,7 @@ public class BinarySearchTree<Key, Value> {
      * @param node: Instance of node.
      * @return - Size of the node.
      */
-    private int size(Node node) {
+    private int size(Node<Key, Value> node) {
         if (node == null)
             return 0;
         return node.size;
@@ -340,10 +306,10 @@ public class BinarySearchTree<Key, Value> {
      * @param key: Key to be compared against.
      * @return - Rank of the node.
      */
-    private int rank(Node node, Key key) {
+    private int rank(Node<Key, Value> node, Key key) {
         if (key == null)
             return 0;
-        int status = Compare.compare(key, node.key, comparator);
+        int status = Compare.compare(key, node.getKey(), comparator);
         if (status < 0)
             return rank(node.left, key);
         else if (status > 0)
@@ -359,7 +325,7 @@ public class BinarySearchTree<Key, Value> {
      * @param node - Node to be checked.
      * @return - Node updated once min is deleted
      */
-    private Node deleteMin(Node node) {
+    private Node<Key, Value> deleteMin(Node<Key, Value> node) {
         if (node.left == null)
             return node.right;
         node.left = deleteMin(node.left);
@@ -374,7 +340,7 @@ public class BinarySearchTree<Key, Value> {
      * @param node - Node to be checked.
      * @return - Node updated once min is deleted
      */
-    private Node deleteMax(Node node) {
+    private Node<Key, Value> deleteMax(Node<Key, Value> node) {
         if (node.right == null)
             return node.left;
         node.right = deleteMax(node.right);
@@ -388,8 +354,8 @@ public class BinarySearchTree<Key, Value> {
      * @param node - Base node.
      * @return - the minimum node under this node.
      */
-    private Node minimum(Node node) {
-        Node current = node;
+    private Node<Key, Value> minimum(Node<Key, Value> node) {
+        Node<Key, Value> current = node;
         while (true) {
             if (current.left != null)
                 current = current.left;
@@ -404,8 +370,8 @@ public class BinarySearchTree<Key, Value> {
      * @param node - Base node.
      * @return - the maximum node under this node.
      */
-    private Node maximum(Node node) {
-        Node current = node;
+    private Node<Key, Value> maximum(Node<Key, Value> node) {
+        Node<Key, Value> current = node;
         while (true) {
             if (current.right != null)
                 current = current.right;
@@ -420,11 +386,11 @@ public class BinarySearchTree<Key, Value> {
      * @param node: Instance of helper node.
      * @param queue: Queue used to bookmark.
      */
-    private void inOrderTraverse(Node node, Queue<Key> queue) {
+    private void inOrderTraverse(Node<Key, Value> node, Queue<Key> queue) {
         if (node == null)
             return;
         inOrderTraverse(node.left, queue);
-        queue.enqueue(node.key);
+        queue.enqueue(node.getKey());
         inOrderTraverse(node.right, queue);
     }
 }
