@@ -1,4 +1,4 @@
-package us.bigfatnoob.bst;
+package us.bigfatnoob.bst.nodes;
 
 /**
  * Instance of Node used in a Binary Search Tree
@@ -9,22 +9,24 @@ public class Node<Key, Value> {
      * Key for node which is used
      * to construct the BST.
      */
-    private Key key;
+    protected Key key;
 
     /***
      * Value stored in the node.
      */
-    private Value value;
+    protected Value value;
 
     /***
      * Left and Right child of the node.
      */
-    Node<Key, Value> left, right;
+    protected Node<Key, Value> left, right;
 
     /***
      * Return number of nodes in the BST.
      */
-    int size;
+    protected int size;
+
+    protected Node(){}
 
     /***
      * Create a new node.
@@ -42,7 +44,7 @@ public class Node<Key, Value> {
      * @param value: Value for the node.
      * @param size: Size of the node.
      */
-    Node(Key key, Value value, int size) {
+    public Node(Key key, Value value, int size) {
         this.key = key;
         this.value = value;
         this.size = size;
@@ -56,10 +58,26 @@ public class Node<Key, Value> {
     }
 
     /***
+     * Set the left child of the node.
+     * @param left - Instance of the left child
+     */
+    public void setLeft(Node<Key, Value> left) {
+        this.left = left;
+    }
+
+    /***
      * @return - Right child of node.
      */
     public Node<Key, Value> getRight() {
         return right;
+    }
+
+    /***
+     * Set the right child of the node.
+     * @param right - Instance of the right child
+     */
+    public void setRight(Node<Key, Value> right) {
+        this.right = right;
     }
 
     /***
@@ -76,7 +94,26 @@ public class Node<Key, Value> {
         return value;
     }
 
-    void setValue(Value value) {
+    /***
+     * Set the value contained in the node.
+     * @param value - Value to be set.
+     */
+    public void setValue(Value value) {
         this.value = value;
+    }
+
+
+    /***
+     * @return - Size of the node
+     */
+    public int getSize() {
+        return size;
+    }
+
+    /***
+     * @param size - Set the size of the node.
+     */
+    public void setSize(int size) {
+        this.size = size;
     }
 }

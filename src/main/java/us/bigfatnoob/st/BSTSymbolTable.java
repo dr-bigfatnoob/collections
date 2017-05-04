@@ -1,7 +1,7 @@
 package us.bigfatnoob.st;
 
-import us.bigfatnoob.bst.BinarySearchTree;
-import us.bigfatnoob.bst.Node;
+import us.bigfatnoob.bst.RedBlackBinarySearchTree;
+import us.bigfatnoob.bst.nodes.Node;
 import us.bigfatnoob.queue.LinkedQueue;
 import us.bigfatnoob.queue.Queue;
 import us.bigfatnoob.stack.LinkedStack;
@@ -17,18 +17,18 @@ import java.util.Comparator;
  */
 public class BSTSymbolTable<Key, Value> implements SymbolTable<Key, Value>{
 
-    private BinarySearchTree<Key, Value> bst;
+    private RedBlackBinarySearchTree<Key, Value> bst;
 
     /***
      * Create an instance of Symbol Table
      * using Binary Search Tree.
      */
     public BSTSymbolTable() {
-        bst = new BinarySearchTree<Key, Value>();
+        bst = new RedBlackBinarySearchTree<Key, Value>();
     }
 
     public BSTSymbolTable(Comparator<Key> comparator) {
-        bst = new BinarySearchTree<Key, Value>(comparator);
+        bst = new RedBlackBinarySearchTree<Key, Value>(comparator);
     }
 
     @Override
@@ -88,25 +88,7 @@ public class BSTSymbolTable<Key, Value> implements SymbolTable<Key, Value>{
 
     @Override
     public Key select(int k) {
-        if (k < 0 || k > bst.size() - 1)
-            throw new IndexOutOfBoundsException("Index out of bounds for a table with size " + bst.size());
-        Stack<Node<Key, Value>> stack = new LinkedStack<Node<Key, Value>>();
-        int i = -1;
-        Node<Key, Value> node = bst.getRoot();
-        stack.push(node);
-        node = node.getLeft();
-        while (!stack.isEmpty() || node != null) {
-            if (node == null) {
-                i++;
-                if (i == k)
-                    return stack.pop().getKey();
-                node = stack.pop().getRight();
-            } else {
-                stack.push(node);
-                node = node.getLeft();
-            }
-        }
-        return null;
+        return bst.select(k);
     }
 
     @Override
@@ -121,60 +103,16 @@ public class BSTSymbolTable<Key, Value> implements SymbolTable<Key, Value>{
 
     @Override
     public int size(Key low, Key high) {
-        Stack<Node<Key, Value>> stack = new LinkedStack<Node<Key, Value>>();
-        Node<Key, Value> node = bst.getRoot();
-        stack.push(node);
-        node = node.getLeft();
-        int count = 0;
-        while (!stack.isEmpty() || node != null) {
-            if (node == null) {
-                if (Compare.compare(stack.peek().getKey(), high, bst.getComparator()) > 0) {
-                    return count;
-                } else if (Compare.compare(stack.peek().getKey(), low, bst.getComparator()) >= 0) {
-                    ++count;
-                }
-                node = stack.pop().getRight();
-            } else {
-                stack.push(node);
-                node = node.getLeft();
-            }
-        }
-        return count;
+        return bst.size(low, high);
     }
 
     @Override
     public Iterable<Key> keys(Key low, Key high) {
-        Stack<Node<Key, Value>> stack = new LinkedStack<Node<Key, Value>>();
-        Queue<Key> queue = new LinkedQueue<Key>();
-        Node<Key, Value> node = bst.getRoot();
-        stack.push(node);
-        node = node.getLeft();
-        while (!stack.isEmpty() || node != null) {
-            if (node == null) {
-                if (Compare.compare(stack.peek().getKey(), high, bst.getComparator()) > 0) {
-                    return queue;
-                } else if (Compare.compare(stack.peek().getKey(), low, bst.getComparator()) >= 0) {
-                    queue.enqueue(stack.peek().getKey());
-                }
-                node = stack.pop().getRight();
-            } else {
-                stack.push(node);
-                node = node.getLeft();
-            }
-        }
-        return queue;
+        return bst.keys(low, high);
     }
 
     @Override
     public Iterable<Key> keys() {
         return bst.keys();
-    }
-
-    public static void main(String[] args) {
-        Integer[] items = new Integer[]{0,1,2,3,4,5,6,7,8};
-        SymbolTable<Integer, Integer> st = new BSTSymbolTable<>();
-        for (Integer item: items)
-            st.put(item, item);
-        System.out.println(st.size(1, 4));
     }
 }

@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
  */
 public class BinarySearchTreeTest {
 
-    private BinarySearchTree<Integer, Integer> bst;
+    protected BinarySearchTree<Integer, Integer> bst;
 
     private Integer[] items = new Integer[]{0,-1,1,-2,2,-3,3,-4,4,-5,5,-6,6};
 
@@ -27,7 +27,7 @@ public class BinarySearchTreeTest {
 
     @Test
     public void testBST() {
-        bst = new BinarySearchTree<>();
+        initialize(null);
         for (Integer item: itemList) {
             bst.put(item, item);
         }
@@ -49,7 +49,7 @@ public class BinarySearchTreeTest {
 
     @Test
     public void testBSTComparator() {
-        bst = new BinarySearchTree<>(absComparator);
+        initialize(absComparator);
         for (Integer item: itemList) {
             bst.put(item, item);
         }
@@ -72,6 +72,10 @@ public class BinarySearchTreeTest {
     private List<Integer> shuffle(List<Integer> lst) {
         Collections.shuffle(lst);
         return lst;
+    }
+
+    protected void initialize(Comparator<Integer> comparator) {
+        bst = new BinarySearchTree<>(comparator);
     }
 
 }

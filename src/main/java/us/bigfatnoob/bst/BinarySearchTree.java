@@ -1,5 +1,6 @@
 package us.bigfatnoob.bst;
 
+import us.bigfatnoob.bst.nodes.Node;
 import us.bigfatnoob.queue.LinkedQueue;
 import us.bigfatnoob.queue.Queue;
 import us.bigfatnoob.utils.Compare;
@@ -11,9 +12,14 @@ import java.util.Comparator;
  */
 public class BinarySearchTree<Key, Value> {
 
-    private Node<Key, Value> root;
+    protected Node<Key, Value> root;
 
-    private Comparator<Key> comparator;
+    protected Comparator<Key> comparator;
+
+    /***
+     * Create a binary search tree.
+     */
+    public BinarySearchTree() {}
 
     /***
      * Create a binary search tree using a comparator.
@@ -38,11 +44,6 @@ public class BinarySearchTree<Key, Value> {
     }
 
     /***
-     * Create a binary search tree.
-     */
-    public BinarySearchTree() {}
-
-    /***
      * Return size of the BST.
      * @return - Size of BST
      */
@@ -50,6 +51,32 @@ public class BinarySearchTree<Key, Value> {
         return size(root);
     }
 
+    /***
+     * Return number of keys between two keys.
+     * @param low - Lower bound for search.
+     * @param high - Upper bound for search.
+     * @return
+     */
+    public int size(Key low, Key high) {
+        if (low == null || high == null)
+            throw new NullPointerException("Arguments to size cannot be null");
+        if (Compare.compare(low, high, comparator) > 0)
+            return 0;
+        if (contains(high))
+            return rank(high) - rank(low) + 1;
+        else
+            return rank(high) - rank(low);
+    }
+
+    /***
+     * Check if key exists in the binary search tree.
+     * @param key - Key to be checked
+     * @return - True if key exists
+     */
+    public boolean contains(Key key) {
+        if (key == null) throw new NullPointerException("argument to contains is null");
+        return get(key) != null;
+    }
 
     /***
      * Get the value of a key from the BST.
@@ -61,9 +88,9 @@ public class BinarySearchTree<Key, Value> {
         while (current != null) {
             int status = Compare.compare(key, current.getKey(), comparator);
             if (status < 0)
-                current = current.left;
+                current = current.getLeft();
             else if (status > 0)
-                current = current.right;
+                current = current.getRight();
             else
                 return current.getValue();
         }
@@ -144,6 +171,25 @@ public class BinarySearchTree<Key, Value> {
         return rank(root, key);
     }
 
+    /***
+     * Get key from BST with a certain rank
+     * @param rank - Rank of key to be retrieved.
+     * @return - Key
+     */
+    public Key select(int rank) {
+        if (rank < 0 || rank > size() - 1)
+            throw new IndexOutOfBoundsException("Index out of bounds for a table with size " + size());
+        Node<Key, Value> node = root;
+        int currentRank = rank(node.getKey());
+        while (rank != currentRank) {
+            if (rank < currentRank)
+                node = node.getLeft();
+            else
+                node = node.getRight();
+            currentRank = rank(node.getKey());
+        }
+        return node.getKey();
+    }
 
     /***
      * Delete node minimum key in the BST.
@@ -181,26 +227,26 @@ public class BinarySearchTree<Key, Value> {
             return null;
         int status = Compare.compare(key, node.getKey(), comparator);
         if (status < 0)
-            node.left = delete(node.left, key);
+            node.setLeft(delete(node.getLeft(), key));
         else if (status > 0)
-            node.right = delete(node.right, key);
+            node.setRight(delete(node.getRight(), key));
         else {
-            if (node.left == null)
-                return node.right;
-            if (node.right == null)
-                return node.left;
+            if (node.getLeft() == null)
+                return node.getRight();
+            if (node.getRight() == null)
+                return node.getLeft();
             Node<Key, Value> temp = node;
             if (Math.random() < 0.5) {
-                node = maximum(temp.left);
-                node.left = deleteMax(temp.left);
-                node.right = temp.right;
+                node = maximum(temp.getLeft());
+                node.setLeft(deleteMax(temp.getLeft()));
+                node.setRight(temp.getRight());
             } else {
-                node = minimum(temp.right);
-                node.right = deleteMin(temp.right);
-                node.left = temp.left;
+                node = minimum(temp.getRight());
+                node.setRight(deleteMin(temp.getRight()));
+                node.setLeft(temp.getLeft());
             }
         }
-        node.size = 1 + size(node.left) + size(node.right);
+        node.setSize(1 + size(node.getLeft()) + size(node.getRight()));
         return node;
     }
 
@@ -217,6 +263,40 @@ public class BinarySearchTree<Key, Value> {
         return queue;
     }
 
+    /***
+     * Retrieve keys between two keys.
+     * @param low: Lower of the key to fetch.
+     * @param high: Higher of the key to fetch.
+     * @return - Queue of keys between low and high in sequential order.
+     */
+    public Iterable<Key> keys(Key low, Key high) {
+        if (low == null || high == null)
+            throw new NullPointerException("Arguments to size cannot be null");
+        Queue<Key> queue = new LinkedQueue<Key>();
+        keys(root, queue, low, high);
+        return queue;
+    }
+
+    /***
+     * Helper method to recursively fetch keys between low and high
+     * @param node - Current node in search.
+     * @param queue - Queue to populate keys.
+     * @param low - Lower limit of search.
+     * @param high - Higher limit of search.
+     */
+    private void keys(Node<Key, Value> node, Queue<Key> queue, Key low, Key high) {
+        if (node == null)
+            return;
+        int lowStatus = Compare.compare(low, node.getKey(), comparator);
+        int highStatus = Compare.compare(high, node.getKey(), comparator);
+        if (lowStatus < 0)
+            keys(node.getLeft(), queue, low, high);
+        if (lowStatus <=0 && highStatus>=0)
+            queue.enqueue(node.getKey());
+        if (highStatus > 0)
+            keys(node.getRight(), queue, low, high);
+    }
+
 
     /***
      * Helper method which is recursively called
@@ -231,12 +311,12 @@ public class BinarySearchTree<Key, Value> {
             return new Node<Key, Value>(key, value, 1);
         int status = Compare.compare(key, node.getKey(), comparator);
         if (status < 0)
-            node.left = put(node.left, key, value);
+            node.setLeft(put(node.getLeft(), key, value));
         else if (status > 0)
-            node.right = put(node.right, key, value);
+            node.setRight(put(node.getRight(), key, value));
         else
             node.setValue(value);
-        node.size = 1 + size(node.left) + size(node.right);
+        node.setSize(1 + size(node.getLeft()) + size(node.getRight()));
         return node;
     }
 
@@ -255,8 +335,8 @@ public class BinarySearchTree<Key, Value> {
         if (status == 0)
             return node;
         if (status < 0)
-            return floor(node.left, key);
-        Node<Key, Value> right = floor(node.right, key);
+            return floor(node.getLeft(), key);
+        Node<Key, Value> right = floor(node.getRight(), key);
         if (right != null)
             return right;
         else
@@ -278,8 +358,8 @@ public class BinarySearchTree<Key, Value> {
         if (status == 0)
             return node;
         if (status > 0)
-            return ceil(node.right, key);
-        Node<Key, Value> left = ceil(node.left, key);
+            return ceil(node.getRight(), key);
+        Node<Key, Value> left = ceil(node.getLeft(), key);
         if (left != null)
             return left;
         else
@@ -292,10 +372,10 @@ public class BinarySearchTree<Key, Value> {
      * @param node: Instance of node.
      * @return - Size of the node.
      */
-    private int size(Node<Key, Value> node) {
+    protected int size(Node<Key, Value> node) {
         if (node == null)
             return 0;
-        return node.size;
+        return node.getSize();
     }
 
 
@@ -311,11 +391,11 @@ public class BinarySearchTree<Key, Value> {
             return 0;
         int status = Compare.compare(key, node.getKey(), comparator);
         if (status < 0)
-            return rank(node.left, key);
+            return rank(node.getLeft(), key);
         else if (status > 0)
-            return 1 + size(node.left) + rank(node.right, key);
+            return 1 + size(node.getLeft()) + rank(node.getRight(), key);
         else
-            return size(node.left);
+            return size(node.getLeft());
     }
 
 
@@ -326,10 +406,10 @@ public class BinarySearchTree<Key, Value> {
      * @return - Node updated once min is deleted
      */
     private Node<Key, Value> deleteMin(Node<Key, Value> node) {
-        if (node.left == null)
-            return node.right;
-        node.left = deleteMin(node.left);
-        node.size = 1 + size(node.left) + size(node.right);
+        if (node.getLeft() == null)
+            return node.getRight();
+        node.setLeft(deleteMin(node.getLeft()));
+        node.setSize(1 + size(node.getLeft()) + size(node.getRight()));
         return node;
     }
 
@@ -341,10 +421,10 @@ public class BinarySearchTree<Key, Value> {
      * @return - Node updated once min is deleted
      */
     private Node<Key, Value> deleteMax(Node<Key, Value> node) {
-        if (node.right == null)
-            return node.left;
-        node.right = deleteMax(node.right);
-        node.size = 1 + size(node.left) + size(node.right);
+        if (node.getRight() == null)
+            return node.getLeft();
+        node.setRight(deleteMax(node.getRight()));
+        node.setSize(1 + size(node.getLeft()) + size(node.getRight()));
         return node;
     }
 
@@ -357,8 +437,8 @@ public class BinarySearchTree<Key, Value> {
     private Node<Key, Value> minimum(Node<Key, Value> node) {
         Node<Key, Value> current = node;
         while (true) {
-            if (current.left != null)
-                current = current.left;
+            if (current.getLeft() != null)
+                current = current.getLeft();
             else
                 return current;
         }
@@ -373,8 +453,8 @@ public class BinarySearchTree<Key, Value> {
     private Node<Key, Value> maximum(Node<Key, Value> node) {
         Node<Key, Value> current = node;
         while (true) {
-            if (current.right != null)
-                current = current.right;
+            if (current.getRight() != null)
+                current = current.getRight();
             else
                 return current;
         }
@@ -389,8 +469,8 @@ public class BinarySearchTree<Key, Value> {
     private void inOrderTraverse(Node<Key, Value> node, Queue<Key> queue) {
         if (node == null)
             return;
-        inOrderTraverse(node.left, queue);
+        inOrderTraverse(node.getLeft(), queue);
         queue.enqueue(node.getKey());
-        inOrderTraverse(node.right, queue);
+        inOrderTraverse(node.getRight(), queue);
     }
 }

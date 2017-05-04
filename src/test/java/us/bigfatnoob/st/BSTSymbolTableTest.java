@@ -1,7 +1,6 @@
 package us.bigfatnoob.st;
 
 import org.junit.Test;
-import us.bigfatnoob.bst.BinarySearchTree;
 import us.bigfatnoob.queue.Queue;
 
 import java.util.Arrays;
@@ -44,11 +43,11 @@ public class BSTSymbolTableTest {
 
     @Test
     public void testSymbolTableComparator() {
-        st = new BSTSymbolTable<>();
+        st = new BSTSymbolTable<>(absComparator);
         for (Integer item: itemList) {
             st.put(item, item);
         }
-        assertEquals(Math.abs(st.select(4)), Math.abs(2));
+        assertEquals(Math.abs(st.select(4)), Math.abs(4));
     }
 
 }
