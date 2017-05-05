@@ -44,6 +44,9 @@ public class BinarySearchTreeTest {
         bst.deleteMax();
         assertEquals(bst.size(), itemList.size() - 2);
         assertEquals(bst.maximum(), itemList.get(itemList.size() - 2));
+        bst.delete(3);
+        assertEquals(bst.size(), itemList.size() - 3);
+        assertEquals(bst.contains(3), false);
     }
 
 

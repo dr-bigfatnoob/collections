@@ -69,6 +69,14 @@ public class BinarySearchTree<Key, Value> {
     }
 
     /***
+     * Check if Binary Search Tree is Empty
+     * @return - True if BST is empty.
+     */
+    public boolean isEmpty() {
+        return size(root) == 0;
+    }
+
+    /***
      * Check if key exists in the binary search tree.
      * @param key - Key to be checked
      * @return - True if key exists
@@ -195,6 +203,8 @@ public class BinarySearchTree<Key, Value> {
      * Delete node minimum key in the BST.
      */
     public void deleteMin() {
+        if (isEmpty())
+            throw new NullPointerException("The BST is empty");
         root = deleteMin(root);
     }
 
@@ -203,6 +213,8 @@ public class BinarySearchTree<Key, Value> {
      * Delete node minimum key in the BST.
      */
     public void deleteMax() {
+        if (isEmpty())
+            throw new NullPointerException("The BST is empty");
         root = deleteMax(root);
     }
 
@@ -212,42 +224,9 @@ public class BinarySearchTree<Key, Value> {
      * @param key - Key of node to be deleted.
      */
     public void delete(Key key) {
+        if (key == null)
+            throw new NullPointerException("key is null");
         root = delete(root, key);
-    }
-
-
-    /***
-     * Delete node with a certain key in the BST.
-     * @param node - Node compared against.
-     * @param key - Key to be deleted.
-     * @return - Node once key is deleted.
-     */
-    private Node<Key, Value> delete(Node<Key, Value> node, Key key) {
-        if (node == null)
-            return null;
-        int status = Compare.compare(key, node.getKey(), comparator);
-        if (status < 0)
-            node.setLeft(delete(node.getLeft(), key));
-        else if (status > 0)
-            node.setRight(delete(node.getRight(), key));
-        else {
-            if (node.getLeft() == null)
-                return node.getRight();
-            if (node.getRight() == null)
-                return node.getLeft();
-            Node<Key, Value> temp = node;
-            if (Math.random() < 0.5) {
-                node = maximum(temp.getLeft());
-                node.setLeft(deleteMax(temp.getLeft()));
-                node.setRight(temp.getRight());
-            } else {
-                node = minimum(temp.getRight());
-                node.setRight(deleteMin(temp.getRight()));
-                node.setLeft(temp.getLeft());
-            }
-        }
-        node.setSize(1 + size(node.getLeft()) + size(node.getRight()));
-        return node;
     }
 
 
@@ -275,6 +254,37 @@ public class BinarySearchTree<Key, Value> {
         Queue<Key> queue = new LinkedQueue<Key>();
         keys(root, queue, low, high);
         return queue;
+    }
+
+    /***
+     * Return the minimum child in the node.
+     * @param node - Base node.
+     * @return - the minimum node under this node.
+     */
+    protected Node<Key, Value> minimum(Node<Key, Value> node) {
+        Node<Key, Value> current = node;
+        while (true) {
+            if (current.getLeft() != null)
+                current = current.getLeft();
+            else
+                return current;
+        }
+    }
+
+
+    /***
+     * Return the maximum child in the node.
+     * @param node - Base node.
+     * @return - the maximum node under this node.
+     */
+    protected Node<Key, Value> maximum(Node<Key, Value> node) {
+        Node<Key, Value> current = node;
+        while (true) {
+            if (current.getRight() != null)
+                current = current.getRight();
+            else
+                return current;
+        }
     }
 
     /***
@@ -430,36 +440,38 @@ public class BinarySearchTree<Key, Value> {
 
 
     /***
-     * Return the minimum child in the node.
-     * @param node - Base node.
-     * @return - the minimum node under this node.
+     * Delete node with a certain key in the BST.
+     * @param node - Node compared against.
+     * @param key - Key to be deleted.
+     * @return - Node once key is deleted.
      */
-    private Node<Key, Value> minimum(Node<Key, Value> node) {
-        Node<Key, Value> current = node;
-        while (true) {
-            if (current.getLeft() != null)
-                current = current.getLeft();
-            else
-                return current;
+    private Node<Key, Value> delete(Node<Key, Value> node, Key key) {
+        if (node == null)
+            return null;
+        int status = Compare.compare(key, node.getKey(), comparator);
+        if (status < 0)
+            node.setLeft(delete(node.getLeft(), key));
+        else if (status > 0)
+            node.setRight(delete(node.getRight(), key));
+        else {
+            if (node.getLeft() == null)
+                return node.getRight();
+            if (node.getRight() == null)
+                return node.getLeft();
+            Node<Key, Value> temp = node;
+            if (Math.random() < 0.5) {
+                node = maximum(temp.getLeft());
+                node.setLeft(deleteMax(temp.getLeft()));
+                node.setRight(temp.getRight());
+            } else {
+                node = minimum(temp.getRight());
+                node.setRight(deleteMin(temp.getRight()));
+                node.setLeft(temp.getLeft());
+            }
         }
+        node.setSize(1 + size(node.getLeft()) + size(node.getRight()));
+        return node;
     }
-
-
-    /***
-     * Return the maximum child in the node.
-     * @param node - Base node.
-     * @return - the maximum node under this node.
-     */
-    private Node<Key, Value> maximum(Node<Key, Value> node) {
-        Node<Key, Value> current = node;
-        while (true) {
-            if (current.getRight() != null)
-                current = current.getRight();
-            else
-                return current;
-        }
-    }
-
 
     /***
      * Helper method to traverse a BST inorder.

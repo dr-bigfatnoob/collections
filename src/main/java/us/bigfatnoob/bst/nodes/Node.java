@@ -88,6 +88,14 @@ public class Node<Key, Value> {
     }
 
     /***
+     * Set the key for node.
+     * @param key - Key to be set.
+     */
+    public void setKey(Key key) {
+        this.key = key;
+    }
+
+    /***
      * @return - Value of node.
      */
     public Value getValue() {
