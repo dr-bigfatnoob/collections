@@ -1,13 +1,6 @@
 package us.bigfatnoob.st;
 
 import us.bigfatnoob.bst.RedBlackBinarySearchTree;
-import us.bigfatnoob.bst.nodes.Node;
-import us.bigfatnoob.queue.LinkedQueue;
-import us.bigfatnoob.queue.Queue;
-import us.bigfatnoob.stack.LinkedStack;
-import us.bigfatnoob.stack.Stack;
-import us.bigfatnoob.utils.Compare;
-
 import java.util.Comparator;
 
 /**
