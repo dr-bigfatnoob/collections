@@ -1,6 +1,6 @@
 package us.bigfatnoob.sort;
 
-import us.bigfatnoob.pq.Heap;
+import us.bigfatnoob.priorityqueue.Heap;
 import us.bigfatnoob.utils.Compare;
 import java.util.Comparator;
 
