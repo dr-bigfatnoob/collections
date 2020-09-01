@@ -8,7 +8,7 @@ import java.util.Comparator;
  * Created by @bigfatnoob on 3/25/17.
  * Merge based implementation of sort
  * Optimizations:
- * 1) Not copying main array into auxiliary array each time during merge.
+ * 1) Not copying Main array into auxiliary array each time during merge.
  * 2) Before merge(for ascending), array[mid + 1] > array[mid] then do not merge. Just copy and return
  * 3) Add a cutoff of 7, below which insertion sort is performed.
  */
