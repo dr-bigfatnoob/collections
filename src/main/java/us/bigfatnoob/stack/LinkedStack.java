@@ -1,5 +1,8 @@
 package us.bigfatnoob.stack;
 
+import us.bigfatnoob.queue.LinkedQueue;
+
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -11,7 +14,7 @@ public class LinkedStack<Item> implements Stack<Item>{
     /***
      * Each node of a class.
      */
-    private class Node {
+    private class Node<Item> {
         /***
          * Instance of item.
          */
@@ -20,7 +23,7 @@ public class LinkedStack<Item> implements Stack<Item>{
         /***
          * Next element of stack.
          */
-        Node next;
+        Node<Item> next;
 
         Node(Item item) {
             this.item = item;
@@ -31,7 +34,7 @@ public class LinkedStack<Item> implements Stack<Item>{
     /***
      * Head of stack.
      */
-    private Node head;
+    private Node<Item> head;
 
     /***
      * Size of stack.
@@ -41,8 +44,8 @@ public class LinkedStack<Item> implements Stack<Item>{
     public void push(Item item) {
         if (item == null)
             throw new NullPointerException();
-        Node node = new Node(item);
-        Node oldHead = head;
+        Node<Item> node = new Node<>(item);
+        Node<Item> oldHead = head;
         if (oldHead == null) {
             head = node;
         } else {
@@ -75,5 +78,38 @@ public class LinkedStack<Item> implements Stack<Item>{
 
     public int size() {
         return size;
+    }
+
+
+    /***
+     * Return an iterator over the items in LIFO order.
+     * @return - Instance of iterator
+     */
+    @Override
+    public Iterator<Item> iterator() {
+        return new LinkedIterator(head);
+    }
+
+    private class LinkedIterator implements Iterator<Item> {
+
+        private Node<Item> current;
+
+        LinkedIterator(Node<Item> start) {
+            current = start;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public Item next() {
+            if (!hasNext())
+                throw new NoSuchElementException();
+            Item item = current.item;
+            current = current.next;
+            return item;
+        }
     }
 }

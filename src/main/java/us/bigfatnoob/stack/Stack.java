@@ -5,7 +5,7 @@ package us.bigfatnoob.stack;
  * Interface defining basic actions
  * of a stack.
  */
-public interface Stack<Item> {
+public interface Stack<Item> extends Iterable<Item>{
 
     /***
      * Push an item into array.
